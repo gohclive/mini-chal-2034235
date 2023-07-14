@@ -35,24 +35,25 @@ def get_flights(destination, departureDate, returnDate):
     ticket = services.get_cheapest_flights(destination, departureDate)
     return_ticket = services.get_cheapest_return_flights(destination, returnDate)
 
+    print(ticket)
+
     if ticket is None:
         return []
     if return_ticket is None:
         return []
 
-    formatted_results = []
-    formatted_result = {
-        "City": ticket["destcity"],
-        "Departure Date": ticket["date"],
-        "Departure Airline": ticket["airlinename"],
-        "Departure Price": ticket["price"],
-        "Arrival Date": return_ticket["date"],
-        "Arrival Airline": return_ticket["airlinename"],
-        "Arrival Price": return_ticket["price"]
-    }
+    flight_list = []
+    flight = {}
+    flight["City"] = ticket["destcity"]
+    flight["Departure Date"] = ticket["date"]
+    flight["Departure Airline"] = ticket["airlinename"]
+    flight["Departure Price"] = ticket["price"]
+    flight["Arrival Date"] = return_ticket["date"]
+    flight["Arrival Airline"] = return_ticket["airlinename"]
+    flight["Arrival Price"] = return_ticket["price"]
 
-    formatted_results.append(formatted_result)
-    return formatted_results
+    flight_list.append(flight)
+    return flight_list
 
 
 @app.get("/hotel")

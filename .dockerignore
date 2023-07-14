@@ -1,0 +1,5 @@
+.flake8
+.gitignore
+dockerfile
+.vscode
+__pycache__

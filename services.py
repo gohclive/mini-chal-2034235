@@ -51,9 +51,6 @@ class Services:
                 'destcity': {'$regex': f'^{re.escape(destination)}$', '$options': 'i'}
             }
 
-            # Sort by price in ascending order to get the cheapest flights first
-            sort_criteria = [("price", pymongo.ASCENDING)]
-
             projection = {
                 '_id': 0,
                 'destcity': 1,
@@ -62,9 +59,9 @@ class Services:
                 'price': 1
             }
 
-            results = flights_collection.find(query, projection).sort(sort_criteria)
+            results = list(flights_collection.find(query, projection).sort("price", pymongo.ASCENDING).limit(1))
 
-            if results.count() == 0:
+            if len(results) == 0:
                 return None
 
             for result in results:
@@ -104,9 +101,9 @@ class Services:
                 'price': 1
             }
 
-            results = flights_collection.find(query, projection).sort(sort_criteria)
+            results = list(flights_collection.find(query, projection).sort(sort_criteria).limit(1))
 
-            if results.count() == 0:
+            if len(results) == 0:
                 return None
 
             for result in results:
@@ -158,6 +155,8 @@ class Services:
 
             # Execute the query
             result = hotels_collection.aggregate(query)
+            if len(result) == 0:
+                return None
 
             formatted_results = []
             for hotel in result:
