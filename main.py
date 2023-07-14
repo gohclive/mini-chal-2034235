@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, status
 from fastapi.responses import RedirectResponse
 from services import services
 from datetime import datetime
@@ -21,16 +21,16 @@ def redirect_to_docs():
 
 
 @app.get("/flight")
-def get_flights(destination, departureDate, returnDate):
+def get_flights(departureDate: str, returnDate: str, destination: str):
     """
     Get a list of return flights at the cheapest price, given the destination city, departure date, and arrival date.
     """
 
     if not departureDate or not returnDate or not destination:
-        raise HTTPException(status_code=400, detail="Missing query parameters")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Missing query parameters")
 
     if not validate_dates(departureDate) or not validate_dates(returnDate):
-        raise HTTPException(status_code=400, detail="Incorrect date format. Please use YYYY-MM-DD")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Incorrect date format. Please use YYYY-MM-DD")
 
     ticket = services.get_cheapest_flights(destination, departureDate)
     return_ticket = services.get_cheapest_return_flights(destination, returnDate)
@@ -41,6 +41,8 @@ def get_flights(destination, departureDate, returnDate):
         return []
     if return_ticket is None:
         return []
+
+    print(ticket)
 
     flight_list = []
     flight = {}
@@ -57,15 +59,15 @@ def get_flights(destination, departureDate, returnDate):
 
 
 @app.get("/hotel")
-def get_hotels(checkInDate, checkOutDate, destination):
+def get_hotels(checkInDate: str, checkOutDate: str, destination: str):
     """
     Get a list of hotels providing the cheapest price, given the destination city, check-in date, and check-out date.
     """
     if not checkInDate or not checkOutDate or not destination:
-        raise HTTPException(status_code=400, detail="Missing query parameters")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Missing query parameters")
 
     if not validate_dates(checkInDate) or not validate_dates(checkOutDate):
-        raise HTTPException(status_code=400, detail="Incorrect date format. Please use YYYY-MM-DD")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Incorrect date format. Please use YYYY-MM-DD")
 
     hotels = services.get_cheapest_hotel(checkInDate, checkOutDate, destination)
 

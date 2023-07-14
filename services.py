@@ -21,17 +21,6 @@ class Services:
             print(f"Error connecting to MongoDB: {str(e)}")
             return None
 
-    def find_city(self, destination):
-        db = self.connect_to_mongodb()
-
-        if db is None:
-            return None
-
-        flights_collection = db['flights']
-
-        city = flights_collection.find_one({'destcity': {'$regex': f'^{re.escape(destination)}$', '$options': 'i'}})
-        return city if city else None
-
     def get_cheapest_flights(self, destination, departure_date):
         # Connect to MongoDB
         db = self.connect_to_mongodb()
@@ -66,7 +55,7 @@ class Services:
 
             for result in results:
                 result['date'] = result['date'].strftime('%Y-%m-%d')
-            return result
+            return results[0]
 
         except Exception as e:
             print(f"Error retrieving flights from MongoDB: {str(e)}")
@@ -108,7 +97,7 @@ class Services:
 
             for result in results:
                 result['date'] = result['date'].strftime('%Y-%m-%d')
-            return result
+            return results[0]
 
         except Exception as e:
             print(f"Error retrieving flights from MongoDB: {str(e)}")
@@ -168,7 +157,7 @@ class Services:
                     "Price": hotel["totalPrice"]
                 }
                 formatted_results.append(formatted_result)
-
+            
             return formatted_results
 
         except Exception as e:
@@ -177,12 +166,3 @@ class Services:
 
 
 services = Services()
-
-if __name__ == '__main__':
-    services = Services()
-
-    a = services.get_cheapest_flights("frankfurt", "2023-12-10")
-    print(a)
-
-    b = services.get_cheapest_return_flights("frankfurt", "2023-12-16")
-    print(b)
