@@ -50,9 +50,9 @@ def get_flights(departureDate: str, returnDate: str, destination: str):
     flight["Departure Date"] = ticket["date"]
     flight["Departure Airline"] = ticket["airlinename"]
     flight["Departure Price"] = ticket["price"]
-    flight["Arrival Date"] = return_ticket["date"]
-    flight["Arrival Airline"] = return_ticket["airlinename"]
-    flight["Arrival Price"] = return_ticket["price"]
+    flight["Return Date"] = return_ticket["date"]
+    flight["Return Airline"] = return_ticket["airlinename"]
+    flight["Return Price"] = return_ticket["price"]
 
     flight_list.append(flight)
     return flight_list

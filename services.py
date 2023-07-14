@@ -143,7 +143,7 @@ class Services:
             ]
 
             # Execute the query
-            result = hotels_collection.aggregate(query)
+            result = list(hotels_collection.aggregate(query))
             if len(result) == 0:
                 return None
 
@@ -156,9 +156,8 @@ class Services:
                     "Hotel": hotel["_id"]["hotel"],
                     "Price": hotel["totalPrice"]
                 }
-                formatted_results.append(formatted_result)
-            
-            return formatted_results
+                formatted_results.append(formatted_result)         
+            return formatted_results[0]
 
         except Exception as e:
             print(f"Error retrieving hotels from MongoDB: {str(e)}")
