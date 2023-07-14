@@ -54,6 +54,8 @@ def get_flights(departureDate: str, returnDate: str, destination: str):
     flight["Return Airline"] = return_ticket["airlinename"]
     flight["Return Price"] = return_ticket["price"]
 
+    # Return in a list
+
     flight_list.append(flight)
     return flight_list
 
@@ -74,4 +76,7 @@ def get_hotels(checkInDate: str, checkOutDate: str, destination: str):
     if hotels is None:
         return []
 
-    return (hotels)
+    # Return in a list
+    hotel_list = []
+    hotel_list.append(hotels)
+    return (hotel_list)

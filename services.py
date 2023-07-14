@@ -150,13 +150,13 @@ class Services:
             formatted_results = []
             for hotel in result:
                 formatted_result = {
-                    "City": hotel["_id"]["city"],
+                    "City": destination.lower().title(),
                     "Check In Date": check_in_date.strftime("%Y-%m-%d"),
                     "Check Out Date": check_out_date.strftime("%Y-%m-%d"),
                     "Hotel": hotel["_id"]["hotel"],
                     "Price": hotel["totalPrice"]
                 }
-                formatted_results.append(formatted_result)         
+                formatted_results.append(formatted_result)
             return formatted_results[0]
 
         except Exception as e:
