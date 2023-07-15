@@ -1,18 +1,21 @@
 from pymongo import MongoClient
 from datetime import datetime
+from dotenv import load_dotenv
 import re
-
+import os
 import pymongo
 
 
 class Services:
 
+    load_dotenv()
+    DB_URL = os.environ.get('DB_URL')
+
     @staticmethod
     def connect_to_mongodb():
         try:
             # Connect to MongoDB
-            client = MongoClient(
-                'mongodb+srv://userReadOnly:7ZT817O8ejDfhnBM@minichallenge.q4nve1r.mongodb.net/')
+            client = MongoClient(services.DB_URL)
             # Access a specific database
             db = client['minichallenge']
             # Return the database object
